@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import RepoList from './RepoList'
 import './RepoSearch.css'
 import Auth from '../utils/auth'
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { Input, Space } from 'antd'
+// import axios from 'axios'
 
 // fetch the JWT token from header
 // const getJwtFromHeader = () => {
@@ -23,6 +25,8 @@ import axios from 'axios'
 //         })
 // }
 
+const { Search } = Input
+
 function RepoSearch() {
     Auth.login()
 
@@ -34,23 +38,29 @@ function RepoSearch() {
         setInputText(lowerCase)
     }
 
+    let navigate = useNavigate()
+    const Redirect = () => {
+        navigate('/Templates')
+    }
+
     return (
         <section className="repo-section">
             <h1>Choose a Github Repo</h1>
 
             <div className="repo-search">
-                <label>
-                    <span className="visually-hidden">Search your repos</span>
-                </label>
-                <input
-                    type="text"
-                    placeholder="Search your repos"
-                    onChange={inputHandler}
-                />
+                <Space direction="vertical">
+                    <Search
+                        placeholder="input search text"
+                        enterButton
+                        size="large"
+                        type="text"
+                        onChange={inputHandler}
+                    />
 
-                <ul>
-                    <RepoList input={inputText} />
-                </ul>
+                    <ul onclick={Redirect}>
+                        <RepoList input={inputText} />
+                    </ul>
+                </Space>
             </div>
         </section>
     )
